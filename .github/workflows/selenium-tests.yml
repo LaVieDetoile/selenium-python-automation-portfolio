@@ -1,0 +1,18 @@
+name: Selenium Python Tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy: { matrix: { browser: [chrome, firefox] } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pipx install poetry
+      - run: poetry install --no-interaction --no-root
+      - run: poetry run ruff check .
+      - run: poetry run pytest
+        env: { BROWSER: '${{ matrix.browser }}', HEADLESS: 'true' }
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with: { name: selenium-report-${{ matrix.browser }}, path: reports/, if-no-files-found: ignore }
