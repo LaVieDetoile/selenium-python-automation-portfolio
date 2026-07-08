@@ -11,3 +11,13 @@ reports/
 screenshots/
 downloads/
 .DS_Store
+!.env.sample
+node_modules/
+playwright-report/
+test-results/
+allure-results/
+allure-report/
+coverage/
+videos/
+traces/
+*.log
